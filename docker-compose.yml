@@ -1,0 +1,19 @@
+version:        "3"
+services:
+  redis:
+    image:      redis
+    ports:
+      - "6379:6379"
+  manager:
+    build:
+      context:  manager
+    command:    python main.py
+    depends_on:
+      - redis
+      - worker
+  worker:
+    build:
+      context:  worker
+    command:    rq worker --url=redis://redis hello_echo
+    depends_on:
+      - redis
