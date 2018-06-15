@@ -11,10 +11,7 @@ q = Queue('hello_echo', connection=redis_conn)
 def main():
     sleep(5)
     names = ['bob', 'alice', 'frank']
-    jobs = []
-
-    for name in names:
-        jobs.append(q.enqueue('tasks.hello_echo', name))
+    jobs = [q.enqueue('tasks.hello_echo', name) for name in names]
 
     for job in jobs:
         while job.result is None:
